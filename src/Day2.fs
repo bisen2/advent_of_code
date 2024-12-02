@@ -1,6 +1,5 @@
 module AdventOfCode2024.Day2
 
-open System
 open FParsec
 open Util
 
@@ -11,17 +10,15 @@ let parseFile = System.IO.File.ReadAllLines >> Seq.toList >> List.map (parse (ma
 
 module Part1 =
 
-  let isStepIncreasing = List.pairwise >> List.map (fun (this, next) -> next - this > 0)
-  let isStepDecreasing = List.pairwise >> List.map (fun (this, next) -> this - next > 0)
-  let isStep1to3 =
-    List.pairwise
-    >> List.map (fun (this:int, next) ->
-          let diff = Math.Abs(this - next)
-          diff >= 1 && diff <= 3)
+  let meetsPred pred = List.pairwise >> List.map pred >> List.exists not >> not
 
-  let isMonoInc = isStepIncreasing >> List.exists not >> not
-  let isMonoDec = isStepDecreasing >> List.exists not >> not
-  let isDiffering1to3 = isStep1to3 >> List.exists not >> not
+  let isMonoInc = meetsPred (fun (this, next) -> next - this > 0)
+  let isMonoDec = meetsPred (fun (this, next) -> this - next > 0)
+  let isDiffering1to3 =
+    let pred (this: int, next) =
+      let diff = System.Math.Abs (this - next)
+      diff >= 1 && diff <= 3
+    meetsPred pred
 
   let isSafe xs = (isMonoInc xs || isMonoDec xs) && isDiffering1to3 xs
 

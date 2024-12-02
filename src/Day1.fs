@@ -1,13 +1,12 @@
 module AdventOfCode2024.Day1
 
-open System
 open FParsec
 open Util
 
 let sampleFile = $"{__SOURCE_DIRECTORY__}/../data/Day1_Sample.txt"
 let inputFile = $"{__SOURCE_DIRECTORY__}/../data/Day1_Input.txt"
 
-let parseFile = IO.File.ReadAllLines >> Seq.toList >> List.map (parse (pint32 .>> spaces .>>. pint32))
+let parseFile = System.IO.File.ReadAllLines >> Seq.toList >> List.map (parse (pint32 .>> spaces .>>. pint32))
 
 module Part1 =
 
@@ -16,7 +15,7 @@ module Part1 =
     >> List.unzip
     >> fun (xs, ys) -> List.sort xs, List.sort ys
     >> fun (xs, ys) -> List.zip xs ys
-    >> List.map (fun (x, y) -> Math.Abs (x - y))
+    >> List.map (fun (x, y) -> System.Math.Abs (x - y))
     >> List.sum
 
   let runSample() = run sampleFile
