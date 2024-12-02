@@ -1,6 +1,5 @@
 module AdventOfCode2024.Util
 
-open System
 open FParsec
 
 let parse pattern input =
