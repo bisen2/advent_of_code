@@ -4,8 +4,8 @@ open System
 open FParsec
 open Util
 
-let sampleFile = "../data/Day1_Sample.txt"
-let inputFile = "../data/Day1_Input.txt"
+let sampleFile = $"{__SOURCE_DIRECTORY__}/../data/Day1_Sample.txt"
+let inputFile = $"{__SOURCE_DIRECTORY__}/../data/Day1_Input.txt"
 
 let parseFile = IO.File.ReadAllLines >> Seq.toList >> List.map (parse (pint32 .>> spaces .>>. pint32))
 
