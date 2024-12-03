@@ -3,8 +3,8 @@ module AdventOfCode2024.Day3
 open FParsec
 open Util
 
-let sampleFile = $"{__SOURCE_DIRECTORY__}/../data/sample/Day3.txt"
-let inputFile = $"{__SOURCE_DIRECTORY__}/../data/actual/Day3.txt"
+let sampleFile = $"{dataFolder}/sample/Day3.txt"
+let inputFile = $"{dataFolder}/actual/Day3.txt"
 
 let mulParser = pstring "mul(" >>. pint32 .>> pstring "," .>>. pint32 .>> pstring ")"
 

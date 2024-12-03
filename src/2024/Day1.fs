@@ -3,8 +3,8 @@ module AdventOfCode2024.Day1
 open FParsec
 open Util
 
-let sampleFile = $"{__SOURCE_DIRECTORY__}/../data/sample/Day1.txt"
-let inputFile = $"{__SOURCE_DIRECTORY__}/../data/actual/Day1.txt"
+let sampleFile = $"{dataFolder}/sample/Day1.txt"
+let inputFile = $"{dataFolder}/actual/Day1.txt"
 
 let parseFile = System.IO.File.ReadAllLines >> Seq.toList >> List.map (parse (pint32 .>> spaces .>>. pint32))
 
