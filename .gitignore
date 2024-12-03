@@ -1,4 +1,4 @@
-data/actual/*
+data/*/actual/*
 
 **/[Bb]in
 **/[Oo]bj
