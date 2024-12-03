@@ -6,17 +6,13 @@ open Util
 let sampleFile = $"{__SOURCE_DIRECTORY__}/../data/sample/Day3.txt"
 let inputFile = $"{__SOURCE_DIRECTORY__}/../data/actual/Day3.txt"
 
+let mulParser = pstring "mul(" >>. pint32 .>> pstring "," .>>. pint32 .>> pstring ")"
+
 module Part1 =
 
   type ParseResult = Mul of int*int | Corrupt
 
-  let parser : Parser<ParseResult list,unit> =
-    many (
-      // attempt to match the "mul(x,y)" pattern
-      attempt ((pstring "mul(" >>. pint32 .>> pstring "," .>>. pint32 .>> pstring ")") |>> Mul)
-      // if can't match, then mark as a corrupt character and move on
-      <|> (anyChar >>% Corrupt)
-    )
+  let parser = many (attempt (mulParser |>> Mul) <|> (anyChar >>% Corrupt))
 
   let run =
     System.IO.File.ReadAllText
@@ -24,36 +20,29 @@ module Part1 =
     >> List.sumBy (function Mul (x,y) -> x * y | Corrupt -> 0)
 
   let runSample() = run sampleFile
-
   let runInput() = run inputFile
 
 module Part2 =
 
   type ParseResult = Mul of int*int | Do | Dont | Corrupt
 
-  let parser: Parser<ParseResult list, unit> =
-    many (
-      // attempt to match the "mul(x,y)" pattern
-      attempt ((pstring "mul(" >>. pint32 .>> pstring "," .>>. pint32 .>> pstring ")") |>> Mul)
-      // next, check for the "don't()" pattern
-      <|> attempt (pstring "don't()" >>% Dont)
-      // now, the "do()" pattern
-      <|> attempt (pstring "do()" >>% Do)
-      // otherwise, it is corrupt
-      <|> (anyChar >>% Corrupt)
-    )
+  let parser =
+    choice
+      [ attempt (mulParser |>> Mul)
+        pstring "don't()" >>% Dont
+        pstring "do()" >>% Do
+        anyChar >>% Corrupt ]
+    |> many
 
-  type ProgState = { Enabled: bool; SoFar: int }
-
-  let runProg (input: ParseResult list) =
-    let folder state instruction =
+  let runProg input =
+    let folder (enabled, soFar) instruction =
       match instruction with
-      | Do -> { state with Enabled = true }
-      | Dont -> { state with Enabled = false }
-      | Mul (x,y) when state.Enabled -> { state with SoFar = state.SoFar + (x * y) }
-      | _ -> state
-    List.fold folder { Enabled = true; SoFar = 0 } input
-    |> _.SoFar
+      | Do -> (true, soFar)
+      | Dont -> (false, soFar)
+      | Mul (x,y) when enabled -> (enabled, soFar + (x * y))
+      | _ -> (enabled, soFar)
+    List.fold folder (true, 0) input
+    |> snd
 
   let run = System.IO.File.ReadAllText >> parse parser >> runProg
 
