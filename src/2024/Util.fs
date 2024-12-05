@@ -9,6 +9,12 @@ let parse pattern input =
   | Failure (error, _, _) -> failwith $"""Error "%s{error}" when parsing line "%s{input}"."""
   | Success (x,_,_) -> x
 
+module List =
+
+  let none cond = List.exists cond >> not
+
+  let middle xs = List.item ((List.length xs) / 2) xs
+
 /// Helper functions for working with `seq<_>`
 module Seq =
 
