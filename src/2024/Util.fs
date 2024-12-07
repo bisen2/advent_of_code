@@ -9,36 +9,34 @@ let parse pattern input =
   | Failure (error, _, _) -> failwith $"""Error "%s{error}" when parsing line "%s{input}"."""
   | Success (x,_,_) -> x
 
-/// Helper functions for working with the `list<_>` type.
-module List =
+/// Helper functions for working with the `seq<_>` type.
+module Seq =
 
-  let iwhere cond = List.indexed >> List.filter (fun (_,x) -> cond x) >> List.map fst
+  let iwhere cond = Seq.indexed >> Seq.filter (snd >> cond) >> Seq.map fst
 
-  let none cond = List.exists cond >> not
+  let none cond = Seq.exists cond >> not
 
-  let middle xs = List.item ((List.length xs) / 2) xs
+  let middle xs = Seq.item (Seq.length xs / 2) xs
 
-/// Helper functions for working with the `list<list<_>>` type.
-module List2 =
+/// Helper functions for working with the `seq<seq<_>>` type.
+module Seq2 =
 
-  /// Given a `list<list<_>>`, finds all indices where `cond` is met.
+  // Given a `seq<seq<_>>`, finds all indices where `cond` is met.
   let iiwhere cond =
-    List.map (List.iwhere cond)
-    >> List.mapi (fun i xs -> List.map (fun x -> (i,x)) xs)
-    >> List.concat
+    Seq.map (Seq.iwhere cond)
+    >> Seq.mapi (fun i xs -> Seq.map (fun x -> (i,x)) xs)
+    >> Seq.concat
 
-  /// Given a `list<list<_>>`, tries to get the item at `source[i][j]`.
+  /// Given a `seq<seq<_>>`, tries to find the item at `source[i][j]`.
   /// Returns `None` if the item does not exist.
   let tryItem source (i,j) =
-    match List.tryItem i source with
-    | Some js -> List.tryItem j js
+    match Seq.tryItem i source with
+    | Some js -> Seq.tryItem j js
     | None -> None
 
-  /// Given a `list<list<_>>`, tries to find the items at each of the given indices.
+  /// Given a `seq<seq<_>>`, tres to fnd the items at each of the given indices.
   /// Returns `None` if any of the items do not exist.
   let trySlice source slice =
-    let maybeSlice = List.map (tryItem source) slice
-    if List.exists Option.isNone maybeSlice then
-      None
-    else
-      Some (List.choose id maybeSlice)
+    let maybeSlice = Seq.map (tryItem source) slice
+    if Seq.exists Option.isNone maybeSlice then None
+    else Some (Seq.choose id maybeSlice)

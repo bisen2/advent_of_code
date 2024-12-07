@@ -17,7 +17,7 @@ module Part1 =
   let run =
     System.IO.File.ReadAllText
     >> parse parser
-    >> List.sumBy (function Mul (x,y) -> x * y | Corrupt -> 0)
+    >> Seq.sumBy (function Mul (x,y) -> x * y | Corrupt -> 0)
 
   let runSample() = run sampleFile
   let runInput() = run inputFile
@@ -41,7 +41,7 @@ module Part2 =
       | Dont -> (false, soFar)
       | Mul (x,y) when enabled -> (enabled, soFar + (x * y))
       | _ -> (enabled, soFar)
-    List.fold folder (true, 0) input
+    Seq.fold folder (true, 0) input
     |> snd
 
   let run = System.IO.File.ReadAllText >> parse parser >> runProg

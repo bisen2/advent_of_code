@@ -20,7 +20,7 @@ module Part1 =
         adds @ muls
     | [] -> []
 
-  let canBeTrue operands goal = List.contains goal (findOutcomes operands)
+  let canBeTrue operands goal = Seq.contains goal (findOutcomes operands)
 
   let run file =
     System.IO.File.ReadAllLines file
@@ -47,14 +47,13 @@ module Part2 =
         adds @ muls @ cons
     | [] -> []
 
-  let canBeTrue operands goal = List.contains goal (findOutcomes operands)
+  let canBeTrue operands goal = Seq.contains goal (findOutcomes operands)
 
   let run =
     System.IO.File.ReadAllLines
-    >> List.ofSeq
-    >> List.map (parse parser)
-    >> List.filter (fun (goal, operands) -> canBeTrue (List.rev operands) goal)
-    >> List.sumBy fst
+    >> Seq.map (parse parser)
+    >> Seq.filter (fun (goal, operands) -> canBeTrue (List.rev operands) goal)
+    >> Seq.sumBy fst
 
   let runSample() = run sample
   let runInput() = run input

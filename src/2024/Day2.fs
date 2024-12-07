@@ -6,11 +6,11 @@ open Util
 let sampleFile = $"{dataFolder}/sample/Day2.txt"
 let inputFile = $"{dataFolder}/actual/Day2.txt"
 
-let parseFile = System.IO.File.ReadAllLines >> Seq.toList >> List.map (parse (many (pint32 .>> spaces)))
+let parseFile = System.IO.File.ReadAllLines >> Seq.map (parse (many (pint32 .>> spaces)))
 
 module Part1 =
 
-  let meetsPred pred = List.pairwise >> List.map pred >> List.exists not >> not
+  let meetsPred pred = Seq.pairwise >> Seq.map pred >> Seq.exists not >> not
 
   let isMonoInc = meetsPred (fun (this, next) -> next - this > 0)
   let isMonoDec = meetsPred (fun (this, next) -> this - next > 0)
@@ -20,13 +20,13 @@ module Part1 =
       diff >= 1 && diff <= 3
     meetsPred pred
 
-  let isSafe xs = (isMonoInc xs || isMonoDec xs) && isDiffering1to3 xs
+  let isSafe (xs: seq<_>) = (isMonoInc xs || isMonoDec xs) && isDiffering1to3 xs
 
   let run =
     parseFile
-    >> List.map isSafe
-    >> List.filter id
-    >> List.length
+    >> Seq.map isSafe
+    >> Seq.filter id
+    >> Seq.length
 
   let runSample() = run sampleFile
   let runInput() = run inputFile
@@ -36,15 +36,15 @@ module Part1 =
 module Part2 =
 
   let isSafe xs =
-    [ 0 .. List.length xs - 1]
-    |> List.map (fun i -> List.removeAt i xs)
-    |> List.exists Part1.isSafe
+    seq { 0 .. Seq.length xs - 1 }
+    |> Seq.map (fun i -> Seq.removeAt i xs)
+    |> Seq.exists Part1.isSafe
 
   let run =
     parseFile
-    >> List.map isSafe
-    >> List.filter id
-    >> List.length
+    >> Seq.map isSafe
+    >> Seq.filter id
+    >> Seq.length
 
   let runSample() = run sampleFile
   let runInput() = run inputFile

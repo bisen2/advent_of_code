@@ -7,10 +7,10 @@ let input = $"{dataFolder}/actual/Day4.txt"
 
 module Part1 =
 
-  let lookDir puzzle dir = [0..3] |> List.map dir |> List2.trySlice puzzle
+  let lookDir puzzle dir = [0..3] |> Seq.map dir |> Seq2.trySlice puzzle
 
   let isTarget maybeWord =
-    match maybeWord with
+    match Option.map Seq.toList maybeWord with
     | Some [ 'X'; 'M'; 'A'; 'S' ] -> true
     | _ -> false
 
@@ -26,25 +26,25 @@ module Part1 =
 
   let lookAround puzzle pos =
     directions pos
-    |> List.map (lookDir puzzle)
-    |> List.map isTarget
-    |> List.sumBy (function true -> 1 | false -> 0)
+    |> Seq.map (lookDir puzzle)
+    |> Seq.map isTarget
+    |> Seq.sumBy (function true -> 1 | false -> 0)
 
   let run file =
-    let puzzle = System.IO.File.ReadAllLines file |> List.ofSeq |> List.map (List.ofSeq)
-    List2.iiwhere ((=) 'X') puzzle // find all 'X' locations
-    |> List.map (lookAround puzzle) // look around them for words
-    |> List.sum // count 'em up
+    let puzzle = System.IO.File.ReadAllLines file |> Seq.map (List.ofSeq)
+    Seq2.iiwhere ((=) 'X') puzzle // find all 'X' locations
+    |> Seq.map (lookAround puzzle) // look around them for words
+    |> Seq.sum // count 'em up
 
   let runSample() = run sample
   let runInput() = run input
 
 module Part2 =
 
-  let lookDir puzzle dir = [-1 .. 1] |> List.map dir |> List2.trySlice puzzle
+  let lookDir puzzle dir = [-1 .. 1] |> Seq.map dir |> Seq2.trySlice puzzle
 
   let isTarget maybeWord =
-    match maybeWord with
+    match Option.map Seq.toList maybeWord with
     | Some [ 'M'; 'A'; 'S' ] -> true
     | Some [ 'S'; 'A'; 'M' ] -> true
     | _ -> false
@@ -55,15 +55,15 @@ module Part2 =
 
   let solutionsHere puzzle =
     directions
-    >> List.map (fun (d1,d2) -> lookDir puzzle d1, lookDir puzzle d2)
-    >> List.map (fun (a, b) -> isTarget a && isTarget b)
-    >> List.sumBy (function true -> 1 | false -> 0)
+    >> Seq.map (fun (d1,d2) -> lookDir puzzle d1, lookDir puzzle d2)
+    >> Seq.map (fun (a, b) -> isTarget a && isTarget b)
+    >> Seq.sumBy (function true -> 1 | false -> 0)
 
   let run file =
-    let puzzle = System.IO.File.ReadAllLines file |> List.ofSeq |> List.map (List.ofSeq)
-    List2.iiwhere ((=) 'A') puzzle
-    |> List.map (solutionsHere puzzle)
-    |> List.sum
+    let puzzle = System.IO.File.ReadAllLines file |> Seq.map (List.ofSeq)
+    Seq2.iiwhere ((=) 'A') puzzle
+    |> Seq.map (solutionsHere puzzle)
+    |> Seq.sum
 
   let runSample() = run sample
   let runInput() = run input
