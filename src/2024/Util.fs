@@ -27,6 +27,8 @@ module Seq2 =
     >> Seq.mapi (fun i xs -> Seq.map (fun x -> (i,x)) xs)
     >> Seq.concat
 
+  let item source (i,j) = Seq.item j (Seq.item i source)
+
   /// Given a `seq<seq<_>>`, tries to find the item at `source[i][j]`.
   /// Returns `None` if the item does not exist.
   let tryItem source (i,j) =

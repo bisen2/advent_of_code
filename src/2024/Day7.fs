@@ -24,10 +24,9 @@ module Part1 =
 
   let run file =
     System.IO.File.ReadAllLines file
-    |> List.ofSeq
-    |> List.map (parse parser)
-    |> List.filter (fun (goal, operands) -> canBeTrue (List.rev operands) goal)
-    |> List.sumBy fst
+    |> Seq.map (parse parser)
+    |> Seq.filter (fun (goal, operands) -> canBeTrue (List.rev operands) goal)
+    |> Seq.sumBy fst
 
   let runSample() = run sample
   let runInput() = run input

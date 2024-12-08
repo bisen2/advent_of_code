@@ -45,7 +45,6 @@ module Part1 =
   let run =
     System.IO.File.ReadAllLines
     >> Seq.map (Seq.map id) // this is silly, but needed for type inference
-    // >> List.ofSeq
     >> runGame
     >> Seq.distinctBy (fun (y,x,_) -> y,x)
     >> Seq.length
@@ -61,9 +60,7 @@ module Part2 =
     let rec loop (y,x,dir) soFar =
       if x >= xlim || x < 0 || y >= ylim || y < 0 then OffMap
       elif Seq.contains (y,x,dir) soFar then Loop
-      else
-        let update = step obstacles (y,x,dir)
-        loop update ((y,x,dir)::soFar)
+      else loop (step obstacles (y,x,dir)) ((y,x,dir)::soFar)
     loop start []
 
   // we only need to check the path the guard will take without additional obstructions
