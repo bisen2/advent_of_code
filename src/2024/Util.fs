@@ -16,10 +16,19 @@ module Seq =
 
   let none cond = Seq.exists cond >> not
 
+  let all cond = Seq.exists (cond >> not) >> not
+
   let middle xs = Seq.item (Seq.length xs / 2) xs
 
 /// Helper functions for working with the `seq<seq<_>>` type.
 module Seq2 =
+
+  /// Given a `seq<seq<_>>`, sees if any of its elements meet condition `cond`
+  let exists cond =
+    Seq.exists (Seq.exists cond)
+
+  /// Given a `seq<seq<_>>`, sees if any of its elements are `value`
+  let contains value = exists ((=) value)
 
   // Given a `seq<seq<_>>`, finds all indices where `cond` is met.
   let iiwhere cond =
