@@ -7,9 +7,6 @@ let input = $"{dataFolder}/actual/Day12.txt"
 
 type SearchResult = NewFarm of (int*int) seq | AlreadyFound
 
-let directions = [ (0,1); (0,-1); (1,0); (-1,0) ]
-let diagonals = [ (1,1); (1,-1); (-1,1); (-1,-1) ]
-
 let inline (+.) (x1,y1) (x2,y2) = (x1+x2, y1+y2)
 let inline ( *. ) (x1,y1) (x2,y2) = (x1*x2, y1*y2)
 
@@ -18,7 +15,7 @@ let findAllFarms map =
   let rec findFarm (soFar, visited) pos =
     if Set.contains pos visited then (soFar, visited)
     else
-      Seq.map ((+.) pos) directions
+      Seq.map ((+.) pos) cardinals
       |> Seq.filter (fun newPos -> Set.contains newPos visited |> not)
       |> Seq.filter (fun newPos -> Seq2.tryItem map newPos = Seq2.tryItem map pos)
       |> Seq.fold findFarm (Set.add pos soFar, Set.add pos visited)
@@ -37,7 +34,7 @@ module Part1 =
 
   let calculateFencingPrice farm =
     let perimeter =
-      directions
+      cardinals
       |> Seq.sumBy (fun dir ->
           Set.filter (fun pos ->
             Set.contains (pos +. dir) farm |> not) farm
@@ -66,7 +63,7 @@ module Part2 =
     | true, false, false -> true
     | _ -> false
 
-  let countCorners map pos = List.sumBy (fun diag -> if isCornerOnDiag map pos diag then 1 else 0) diagonals
+  let countCorners map pos = List.sumBy (fun diag -> if isCornerOnDiag map pos diag then 1 else 0) antiCardinals
 
   let calculateFencingPrice map farm =
     Seq.sumBy (countCorners map) farm * Set.count farm

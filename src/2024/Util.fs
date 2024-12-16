@@ -9,6 +9,9 @@ let parse pattern input =
   | Failure (error, _, _) -> failwith $"""Error "%s{error}" when parsing line "%s{input}"."""
   | Success (x,_,_) -> x
 
+let cardinals = [ (0,1); (0,-1); (1,0); (-1,0) ]
+let antiCardinals = [ (1,1); (1,-1); (-1,1); (-1,-1) ]
+
 /// Helper functions for working with the `seq<_>` type.
 module Seq =
 
