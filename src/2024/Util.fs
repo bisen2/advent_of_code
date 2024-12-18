@@ -12,6 +12,9 @@ let parse pattern input =
 let cardinals = [ (0,1); (0,-1); (1,0); (-1,0) ]
 let antiCardinals = [ (1,1); (1,-1); (-1,1); (-1,-1) ]
 
+let inline (+.) (x1,y1) (x2,y2) = (x1+x2, y1+y2)
+let inline ( *. ) (x1,y1) (x2,y2) = (x1*x2, y1*y2)
+
 /// Helper functions for working with the `seq<_>` type.
 module Seq =
 
@@ -54,3 +57,15 @@ module Seq2 =
     let maybeSlice = Seq.map (tryItem source) slice
     if Seq.exists Option.isNone maybeSlice then None
     else Some (Seq.choose id maybeSlice)
+
+module Array2D =
+
+  let item (i,j) (arr: 't[,]) = arr[i,j]
+
+  let pick cond (arr: 't[,]) =
+    List.allPairs [ 0..arr[*,0].Length-1 ] [ 0..arr[0,*].Length - 1 ]
+    |> List.pick (fun (i,j) -> if cond arr[i,j] then Some (i,j) else None)
+
+  let iiwhere cond (arr: 't[,]) =
+    Seq.allPairs [ 0..arr[*,0].Length-1 ] [ 0..arr[0,*].Length - 1 ]
+    |> Seq.filter (fun (i,j) -> cond arr[i,j])

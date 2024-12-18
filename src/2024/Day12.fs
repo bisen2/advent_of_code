@@ -7,9 +7,6 @@ let input = $"{dataFolder}/actual/Day12.txt"
 
 type SearchResult = NewFarm of (int*int) seq | AlreadyFound
 
-let inline (+.) (x1,y1) (x2,y2) = (x1+x2, y1+y2)
-let inline ( *. ) (x1,y1) (x2,y2) = (x1*x2, y1*y2)
-
 let findAllFarms map =
 
   let rec findFarm (soFar, visited) pos =

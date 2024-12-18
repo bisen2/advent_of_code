@@ -51,6 +51,10 @@
 // Day13.Part2.runInput() |> printfn "Day 13 Part 2 Actual: %A"
 // Day14.Part1.runSample() |> printfn "Day 14 Part 1 Sample: %A"
 // Day14.Part1.runInput() |> printfn "Day 14 Part 1 Actual: %A"
-Day14.Part2.runInput() |> printfn "Day 14 Part 2 Actual: %A"
+// Day14.Part2.runInput() |> printfn "Day 14 Part 2 Actual: %A"
+Day15.Part1.runSample() |> printfn "Day 15 Part 1 Sample: %A"
+Day15.Part1.runInput() |> printfn "Day 15 Part 1 Actual: %A"
+Day15.Part2.runSample() |> printfn "Day 15 Part 2 Sample: %A"
+Day15.Part2.runInput() |> printfn "Day 15 Part 2 Actual: %A"
 
 System.Console.ReadLine() |> ignore
