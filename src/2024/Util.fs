@@ -26,6 +26,12 @@ module Seq =
 
   let middle xs = Seq.item (Seq.length xs / 2) xs
 
+  /// Removes the first instance where `cond` is met.
+  let remove cond xs =
+    match Seq.tryFindIndex cond xs with
+    | Some index -> Seq.removeAt index xs
+    | None -> xs
+
 /// Helper functions for working with the `seq<seq<_>>` type.
 module Seq2 =
 

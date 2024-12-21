@@ -5,6 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Util.fs" />
+    <Compile Include="Day16_Parsing.fs" />
+    <Compile Include="Day16.fs" />
     <Compile Include="Day15.fs" />
     <Compile Include="Day14.fs" />
     <Compile Include="Day13.fs" />
@@ -23,5 +25,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="fparsec" Version="1.1.1" />
+    <PackageReference Include="Plotly.net" Version="5.1.0" />
   </ItemGroup>
 </Project>
