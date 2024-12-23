@@ -77,6 +77,11 @@ module Seq2 =
 
 module Array2D =
 
+  let tryItem (arr: 't[,]) (i,j) =
+    if i >= 0 && i < Array2D.length1 arr && j >= 0 && j < Array2D.length2 arr then
+      Some arr[i,j]
+    else None
+
   let item (i,j) (arr: 't[,]) = arr[i,j]
 
   let pick cond (arr: 't[,]) =
