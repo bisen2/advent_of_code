@@ -15,6 +15,17 @@ let antiCardinals = [ (1,1); (1,-1); (-1,1); (-1,-1) ]
 let inline (+.) (x1,y1) (x2,y2) = (x1+x2, y1+y2)
 let inline ( *. ) (x1,y1) (x2,y2) = (x1*x2, y1*y2)
 
+module List =
+
+  let lastN n xs = xs |> List.rev |> List.take n |> List.rev
+
+  /// Checks if list `xs` starts with the elements of list `ys`.
+  let startsWith (xs: 't list) (ys: 't list) =
+    xs[0 .. List.length ys - 1] = ys[0 .. List.length ys - 1]
+
+  /// Checks if list `xs` ends with the elements of list `ys`.
+  let endsWith xs ys = startsWith (List.rev xs) (List.rev ys)
+
 /// Helper functions for working with the `seq<_>` type.
 module Seq =
 
