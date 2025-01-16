@@ -5,6 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Util.fs" />
+    <Compile Include="Maze2D.fs" />
+    <Compile Include="Day20.fs" />
     <Compile Include="Day18.fs" />
     <Compile Include="Day17.fs" />
     <Compile Include="Day16_Parsing.fs" />
