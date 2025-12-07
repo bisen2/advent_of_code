@@ -8,14 +8,11 @@ let inputFile = $"{dataFolder}/actual/Day6.txt"
 
 type Operation = Addition | Multiplication
 
-let solveProblem (op, inputs) =
-  match op with
-  | Addition -> List.fold (+) 0L inputs
-  | Multiplication -> List.fold (*) 1L inputs
+type ParsedNumber =
+  Number of int64 | Space
+  static member Render = function Number n -> n.ToString() | Space -> "_"
 
-module Part1 =
-
-  module Parsing =
+module Parsing =
     let pSpaces = pchar ' ' |> many |>> ignore
     let pNum = pSpaces >>. pint64 .>> pSpaces
     let pNumRow = many pNum .>> newline
@@ -24,6 +21,18 @@ module Part1 =
     let pOperation = pSpaces >>. pAddition <|> pMultiplication .>> pSpaces
     let pOpRow = many pOperation .>> newline
     let parser = many pNumRow .>>. pOpRow
+    let pChar = digit |>> string |>> System.Int64.Parse |>> Number <|> (pchar ' ' >>% Space)
+    let pCharRow = many pChar .>> newline
+
+let solveProblem (op, inputs) =
+  match op with
+  | Addition -> List.fold (+) 0L inputs
+  | Multiplication -> List.fold (*) 1L inputs
+
+module Part1 =
+  open Parsing
+
+  let parser = many pNumRow .>>. pOpRow
 
   let run =
     System.IO.File.ReadAllText
@@ -36,15 +45,9 @@ module Part1 =
   let runInput() = run inputFile
 
 module Part2 =
+  open Parsing
 
-  type ParsedNumber =
-    Number of int64 | Space
-    static member Render = function Number n -> n.ToString() | Space -> "_"
-
-  module Parsing =
-    let pChar = digit |>> string |>> System.Int64.Parse |>> Number <|> (pchar ' ' >>% Space)
-    let pCharRow = many pChar .>> newline
-    let parser = many pCharRow .>>. Part1.Parsing.pOpRow
+  let parser = many pCharRow .>>. pOpRow
 
   let buildNumber =
     List.map (function Number x -> x.ToString() | Space -> "")
@@ -62,7 +65,7 @@ module Part2 =
 
   let run =
     System.IO.File.ReadAllText
-    >> parse Parsing.parser
+    >> parse parser
     >> fun (numRows, opRow) ->
         numRows
         |> List2D.padToSquare Space
