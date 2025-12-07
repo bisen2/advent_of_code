@@ -29,3 +29,18 @@ module List =
     | x :: xs ->
         Seq.fold (fun (i,max,maxi) x -> if x > max then i+1, x, i+1 else i+1, max, maxi) (0, x, 0) xs
         |> fun (_,max,maxi) -> {| Value = max; Index = maxi |}
+
+module List2D =
+
+  let padToSquare pad xss =
+    let dim = xss |> List.map List.length |> List.max
+    xss
+    |> List.map (fun xs -> xs @ List.init (dim - List.length xs) (fun _ -> pad))
+
+  /// Requires a square List2D - if your input is not square, run it through List2D.padToSquare first
+  let transpose xss =
+    let rec impl acc todo =
+      match List.head todo with
+      | [] -> acc
+      | _ -> impl (List.map List.head todo :: acc) (List.map List.tail todo)
+    impl [] xss
