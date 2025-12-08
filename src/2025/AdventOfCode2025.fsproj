@@ -5,7 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup><Compile Include="Util.fs" /><Compile Include="Day6.fs" /><Compile Include="Day5.fs" /><Compile Include="Day3.fs" /><Compile Include="Day2.fs" /><Compile Include="Day1.fs" />
+  <ItemGroup><Compile Include="Util.fs" /><Compile Include="Day7.fs" /><Compile Include="Day6.fs" /><Compile Include="Day5.fs" /><Compile Include="Day3.fs" /><Compile Include="Day2.fs" /><Compile Include="Day1.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
